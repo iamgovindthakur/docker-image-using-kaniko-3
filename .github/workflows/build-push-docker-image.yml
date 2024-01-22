@@ -30,7 +30,7 @@ jobs:
       run: |
         docker run --rm \
           -v ${{ github.workspace }}:/workspace \
-          -v /kaniko/.docker/config.json:/kaniko/.docker/config.json \
+          -v ${{ github.workspace }}/.docker/config.json:/kaniko/.docker/config.json \
           gcr.io/kaniko-project/executor:latest \
           --context=/workspace \
           --dockerfile=/workspace/Dockerfile \
