@@ -1,0 +1,35 @@
+name: Docker Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # - name: Set up Docker Buildx
+    #   run: |
+    #     docker buildx create --use
+    #     docker buildx inspect
+    #   shell: bash
+
+    - name: Set up Docker Configuration
+      run: echo -n "$DOCKER_CONFIG_JSON" | base64 -d > /kaniko/.docker/config.json
+      env:
+        DOCKER_CONFIG_JSON: ${{ secrets.DOCKER_CONFIG_JSON }}
+
+    - name: Build and push Docker image
+      run: |
+        docker run --rm \
+          -v ${{ github.workspace }}:/workspace \
+          -v /kaniko/.docker/config.json:/kaniko/.docker/config.json \
+          gcr.io/kaniko-project/executor:latest \
+          --context=/workspace \
+          --dockerfile=/workspace/Dockerfile \
+          --destination=iamgovindthakur/my-kaniko-image-xyz:1.0
