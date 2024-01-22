@@ -34,4 +34,4 @@ jobs:
           gcr.io/kaniko-project/executor:latest \
           --context=/workspace \
           --dockerfile=/workspace/Dockerfile \
-          --destination=iamgovindthakur/image-build-using-kaniko:${{ github.sha }}
+          --destination=iamgovindthakur/image-build-using-kaniko:${{ github.sha:0:8 }}
