@@ -21,8 +21,8 @@ jobs:
 
     - name: Set up Docker Configuration
       run: |
-        mkdir -p /kaniko/.docker
-        echo -n "$DOCKER_CONFIG_JSON" | base64 -d > /kaniko/.docker/config.json
+        mkdir -p ${{ github.workspace }}/.docker
+        echo -n "$DOCKER_CONFIG_JSON" | base64 -d > ${{ github.workspace }}/.docker/config.json
       env:
         DOCKER_CONFIG_JSON: ${{ secrets.DOCKER_CONFIG_JSON }}
 
