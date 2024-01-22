@@ -28,10 +28,11 @@ jobs:
 
     - name: Build and push Docker image
       run: |
+        commit_sha=$(echo ${{ github.sha }} | cut -c1-8)
         docker run --rm \
           -v ${{ github.workspace }}:/workspace \
           -v ${{ github.workspace }}/.docker/config.json:/kaniko/.docker/config.json \
           gcr.io/kaniko-project/executor:latest \
           --context=/workspace \
           --dockerfile=/workspace/Dockerfile \
-          --destination=iamgovindthakur/image-build-using-kaniko:${{ github.sha.substring(0, 8) }}
+          --destination=iamgovindthakur/image-build-using-kaniko:${commit_sha}
