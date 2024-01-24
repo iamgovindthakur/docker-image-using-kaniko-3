@@ -37,8 +37,8 @@ jobs:
           --destination=iamgovindthakur/image-build-using-kaniko:${commit_sha} \
           --tar-path /workspace/image-build-using-kaniko.tar \
            --no-push
-      - name: Loading Build image to docker local
-        run: docker load -i ${{ github.workspace }}/image-build-using-kaniko.tar
+    - name: Loading Build image to docker local
+      run: docker load -i ${{ github.workspace }}/image-build-using-kaniko.tar
 
-       - name: Listing build docker image
-        run: docker image ls | grep image-build-using-kaniko
+    - name: Listing build docker image
+      run: docker image ls | grep image-build-using-kaniko
