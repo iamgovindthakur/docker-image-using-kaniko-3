@@ -1,0 +1,44 @@
+name: Docker Local Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # - name: Set up Docker Buildx
+    #   run: |
+    #     docker buildx create --use
+    #     docker buildx inspect
+    #   shell: bash
+
+    - name: Set up Docker Configuration
+      run: |
+        mkdir -p ${{ github.workspace }}/.docker
+        echo -n "$DOCKER_CONFIG_JSON" | base64 -d > ${{ github.workspace }}/.docker/config.json
+      env:
+        DOCKER_CONFIG_JSON: ${{ secrets.DOCKER_CONFIG_JSON }}
+
+    - name: Build and push Docker image
+      run: |
+        commit_sha=$(echo ${{ github.sha }} | cut -c1-8)
+        docker run --rm \
+          -v ${{ github.workspace }}:/workspace \
+          gcr.io/kaniko-project/executor:latest \
+          --context=/workspace \
+          --dockerfile=/workspace/Dockerfile \
+          --destination=iamgovindthakur/image-build-using-kaniko:${commit_sha} \
+          --tar-path /workspace/image-build-using-kaniko.tar \
+           --no-push
+      - name: Loading Build image to docker local
+        run: docker load -i ${{ github.workspace }}/image-build-using-kaniko.tar
+
+       - name: Listing build docker image
+        run: docker image ls | grep image-build-using-kaniko
