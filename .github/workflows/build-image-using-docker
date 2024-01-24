@@ -13,11 +13,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    # - name: Set up Docker Buildx
-    #   run: |
-    #     docker buildx create --use
-    #     docker buildx inspect
-    #   shell: bash
 
     - name: Set up Docker Configuration
       run: |
