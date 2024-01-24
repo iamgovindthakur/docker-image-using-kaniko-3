@@ -21,7 +21,7 @@ jobs:
       env:
         DOCKER_CONFIG_JSON: ${{ secrets.DOCKER_CONFIG_JSON }}
 
-    - name: Build Docker image
+    - name: Build Docker image in local
       run: |
         commit_sha=$(echo ${{ github.sha }} | cut -c1-8)
         docker run --rm \
